@@ -1,0 +1,4 @@
+div.radio-group input[type=radio] {
+	opacity: 0;
+    filter: alpha(opacity=0);
+}
