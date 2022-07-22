@@ -25,6 +25,7 @@ module.exports = {
       },
       "white-gray": "#DDDDDD",
       "bg-input-gray": "#C1C1C1",
+      "gray-nav": "#424242",
       ...colors,
     },
   },
