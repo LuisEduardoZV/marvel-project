@@ -1,69 +1,52 @@
 import {useParams} from 'react-router-dom';
-import {useFetchSearchByOptionQuery} from '../../api/marvelApi';
+import {useFetchSearchByCharacterQuery, useFetchSearchByComicQuery, useFetchSearchByEventQuery} from '../../api/marvelApi';
+//import { createHash } from '../../keys';
 
-import logo from '../../assets/marvel-logo.png'
+import Loading from '../../components/Loading';
+import Error from '../../components/Error';
+import Nav from '../../components/Nav';
+import LeftContainer from './components/LeftContainer';
+import RightContainer from './components/RightContainer';
 
 const Search = () => {
 
     const {name, option} = useParams();
 
-    const {data, error, isLoading, isFetching, isSuccess} = useFetchSearchByOptionQuery(name);
+    const {data: dataCharacter, error: errorCharacter, isLoading: isLoadingCharacter, idFetching: isFetchingCharacter, isSuccess: isSuccessCharacter} = 
+        useFetchSearchByCharacterQuery(name, {skip: option === 'characters' ? false : true});
+    const {data: dataComic, error: errorComic, isLoading: isLoadingComic, idFetching: isFetchingComic, isSuccess: isSuccessComic} = 
+        useFetchSearchByComicQuery(name, {skip: option === 'comics' ? false : true});
+    const {data: dataEvent, error: errorEvent, isLoading: isLoadingEvent, idFetching: isFetchingEvent, isSuccess: isSuccessEvent} = 
+        useFetchSearchByEventQuery(name, {skip: option === 'events' ? false : true});
 
-    console.log(data);
+    const getDataByOption = () =>{
+        if(isSuccessCharacter) return dataCharacter?.data?.results[0];
+        else if(isSuccessComic) return dataComic?.data?.results[0];
+        else if(isSuccessEvent) return dataEvent?.data?.results[0];
+    }
+
+    const renderContent = () => {
+        if(isLoadingCharacter || isLoadingComic || isLoadingEvent || isFetchingCharacter || isFetchingComic || isFetchingEvent){
+            return <Loading text="Obteniendo información..."/>;
+        }else if((errorCharacter || errorComic || errorEvent) || (dataCharacter?.data?.total === 0 || dataComic?.data?.total === 0 || dataEvent?.data?.total === 0)){
+            return <Error />;
+        }else if(isSuccessCharacter || isSuccessComic || isSuccessEvent){
+            const datos = getDataByOption();
+            const image = datos?.thumbnail;
+            return (
+                <div className='flex flex-col w-full h-screen bg-white-gray'>
+                    <Nav />
+                    <div className='flex flex-row w-full h-full py-20 px-24 font-rajdhani'>
+                        <LeftContainer option={option} image={image} datos={datos} />
+                        <RightContainer option={option} datos={datos} />
+                    </div>
+                </div>
+            );
+        }
+    }
 
     return(
-        <div className='flex flex-col w-full h-full bg-white-gray'>
-            <div className='flex w-full bg-gray-nav justify-center items-center'>
-                <img src={logo} alt="Marvel logo" className='w-36 h-20' />
-            </div>
-            <div className='flex flex-row w-full h-full py-20 px-24 font-rajdhani'>
-                <div className='flex w-2/5 flex-col h-full'>
-                    <h2 className='font-bold text-black text-5xl mb-12 text-left'>{name}</h2>
-                    <img src='' alt={`${name}`} className='' />
-                </div>
-                <div className='flex w-3/5 flex-col justify-start items-start text-left'>
-                    <p className=' text-2xl mt-28'>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    </p>
-                    <div className='flex my-14 flex-col w-full h-full text-lg'>
-                        <h3 className='font-bold text-xl'>Comics</h3>
-                        <div className='flex flex-row w-full mt-3'>
-                            <p className='mr-16'>Comic 1</p>
-                            <p className='mr-16'>Comic 2</p>
-                            <p className='mr-16'>Comic 3</p>
-                            <p className='font-bold border-b-2 border-marvel-vino-80'>More...</p>
-                        </div>
-                    </div>
-                    <div className='flex flex-col w-full h-full text-lg'>
-                        <h3 className='font-bold text-xl'>Series</h3>
-                        <div className='flex flex-row w-full mt-3'>
-                            <p className='mr-16'>Serie 1</p>
-                            <p className='mr-16'>Serie 2</p>
-                            <p className='mr-16'>Serie 3</p>
-                            <p className='font-bold border-b-2 border-marvel-vino-80'>More...</p>
-                        </div>
-                    </div>
-                    <div className='flex my-14 flex-col w-full h-full text-lg'>
-                        <h3 className='font-bold text-xl'>Stories</h3>
-                        <div className='flex flex-row w-full mt-3'>
-                            <p className='mr-16'>Storie 1</p>
-                            <p className='mr-16'>Storie 2</p>
-                            <p className='mr-16'>Storie 3</p>
-                            <p className='font-bold border-b-2 border-marvel-vino-80'>More...</p>
-                        </div>
-                    </div>
-                    <div className='flex flex-col w-full h-full text-lg'>
-                        <h3 className='font-bold text-xl'>Events</h3>
-                        <div className='flex flex-row w-full mt-3'>
-                            <p className='mr-16'>Event 1</p>
-                            <p className='mr-16'>Event 2</p>
-                            <p className='mr-16'>Event 3</p>
-                            <p className='font-bold border-b-2 border-marvel-vino-80'>More...</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div>{renderContent()}</div>
     );
 }
 
