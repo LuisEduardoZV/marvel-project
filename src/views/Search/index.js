@@ -34,7 +34,7 @@ const Search = () => {
             const datos = getDataByOption();
             const image = datos?.thumbnail;
             return (
-                <div className='flex flex-col w-full h-screen bg-white-gray'>
+                <div className='flex flex-col w-full h-full bg-white-gray' style={{minHeight: "100vh"}}>
                     <Nav />
                     <div className='flex flex-row w-full h-full py-20 px-24 font-rajdhani'>
                         <LeftContainer option={option} image={image} datos={datos} />
