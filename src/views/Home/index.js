@@ -21,7 +21,8 @@ const Home = () => {
 
     const handleSearch = () => {
         if(!(search === "") && !(option === "")) navigate(`/search/${option}/${search}`);
-        else alert("Ingrese todos los datos para hacer la busqueda");
+        else if(!(option === "")) navigate(`/search/${option}`);
+        else alert("Please select at least one search option.");
     }
 
     return(

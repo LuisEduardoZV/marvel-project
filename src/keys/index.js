@@ -4,7 +4,5 @@ const PRIVATE_KEY = "3e7761c75865d5a81ec2c1786f46f94ee4cc7a85";
 const md5 = require('md5');
 
 export const createHash = (time) => {
-    const hash = md5(`${time}${PRIVATE_KEY}${PUBLIC_KEY}`);
-    console.log(hash);
-    return hash;
+    return md5(`${time}${PRIVATE_KEY}${PUBLIC_KEY}`);
 }

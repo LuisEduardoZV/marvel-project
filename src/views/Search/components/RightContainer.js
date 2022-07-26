@@ -12,7 +12,6 @@ const RightContainer = ({datos, option}) => {
             const stories = datos?.stories?.items;
             const series = datos?.series?.items;
             const comics = datos?.comics?.items;
-            
             setData([
                 {data: comics.length >= 4 ? comics.slice(0,3) : comics, title: "Comics"},
                 {data: series.length >= 4 ? series.slice(0,3) : series, title: "Series"},
