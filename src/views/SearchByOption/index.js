@@ -15,42 +15,53 @@ const SearchByOption = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [limit, ] = useState(20);
-    const [offset, ] = useState(0);
+    const [offset, setOffset] = useState(0);
     const [ts, ] = useState(5 + Math.random() * (1000 - 5));
     const [hash, ] = useState(createHash(ts));
 
-    const {data: dataCharacter, error: errorCharacter, isLoading: isLoadingCharacter, idFetching: isFetchingCharacter, isSuccess: isSuccessCharacter} = 
+    const {data: dataCharacter, error: errorCharacter, isLoading: isLoadingCharacter, isFetching: isFetchingCharacter, isSuccess: isSuccessCharacter} = 
         useFetchGetAllCharactersQuery({hash: hash, ts: ts, limit: limit, offset: offset}, {skip: option === 'characters' ? false : true});
-    const {data: dataComic, error: errorComic, isLoading: isLoadingComic, idFetching: isFetchingComic, isSuccess: isSuccessComic} = 
+    const {data: dataComic, error: errorComic, isLoading: isLoadingComic, isFetching: isFetchingComic, isSuccess: isSuccessComic} = 
         useFetchGetAllComicsQuery({hash: hash, ts: ts, limit: limit, offset: offset}, {skip: option === 'comics' ? false : true});
-    const {data: dataEvent, error: errorEvent, isLoading: isLoadingEvent, idFetching: isFetchingEvent, isSuccess: isSuccessEvent} = 
+    const {data: dataEvent, error: errorEvent, isLoading: isLoadingEvent, isFetching: isFetchingEvent, isSuccess: isSuccessEvent} = 
         useFetchGetAllEventsQuery({hash: hash, ts: ts, limit: limit, offset: offset}, {skip: option === 'events' ? false : true});
 
     const getData = () => {
-        if(isSuccessCharacter) return dataCharacter?.data;
-        else if(isSuccessComic) return dataComic?.data;
-        else if(isSuccessEvent) return dataEvent?.data;
+        if(isSuccessCharacter) return dataCharacter.data;
+        else if(isSuccessComic) return dataComic.data;
+        else if(isSuccessEvent) return dataEvent.data;
     }
 
     //Change page
-    const onClickPaginate = (page) => {
-        setCurrentPage(page);
+    const onClickPaginate = (buttonSelected) => {
+        if(buttonSelected === 'next'){
+            setCurrentPage(currentPage+1);
+            setOffset(offset+limit);
+        }else if(buttonSelected === 'back'){
+            setCurrentPage(currentPage-1);
+            setOffset(offset-limit);
+        }
     }
 
     const renderContent = () => {
         if(isLoadingCharacter || isLoadingComic || isLoadingEvent || isFetchingCharacter || isFetchingComic || isFetchingEvent){
             return <Loading text="Obteniendo información..."/>;
         }else if((errorCharacter || errorComic || errorEvent) || (dataCharacter?.data?.total === 0 || dataComic?.data?.total === 0 || dataEvent?.data?.total === 0)){
-            return <Error />;
+            return <Error text="No info" />;
         }else if(isSuccessCharacter || isSuccessComic || isSuccessEvent){
-            const indexOfLastItem = currentPage*limit;
-            const indexOfFistItem = indexOfLastItem-limit;
-            const generalData = getData();
-            const currentData = generalData?.results?.slice(indexOfFistItem, indexOfLastItem);
+            const dataGeneral = getData();
+            const currentData = dataGeneral?.results;
+            const lastPage = dataGeneral?.total/limit;
+            const tam = dataGeneral?.count;
+            const dataLeft = currentData?.slice(0,tam/2);
+            const dataRight = currentData?.slice(tam/2,tam);
             return(
                 <>
-                    <SearchList data={currentData} option={option} />
-                    <Pagination itemsPerPage={limit} totalItems={generalData?.total} onClickPaginate={onClickPaginate} />
+                    <Pagination currentPage={currentPage} 
+                        onClickPaginate={onClickPaginate} 
+                        lastPage={lastPage} 
+                    />
+                    <SearchList dataLeft={dataLeft} dataRight={dataRight}  option={option} />
                 </>
             );
         }

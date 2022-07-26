@@ -34,7 +34,8 @@ const Search = () => {
         if(isLoadingCharacter || isLoadingComic || isLoadingEvent || isFetchingCharacter || isFetchingComic || isFetchingEvent){
             return <Loading text="Obteniendo información..."/>;
         }else if((errorCharacter || errorComic || errorEvent) || (dataCharacter?.data?.total === 0 || dataComic?.data?.total === 0 || dataEvent?.data?.total === 0)){
-            return <Error />;
+            if((dataCharacter?.data?.total === 0 || dataComic?.data?.total === 0 || dataEvent?.data?.total === 0)) 
+                return <Error text={`No information was found for the following ${option.slice(0,option.length-1)}: ${name}`} />;
         }else if(isSuccessCharacter || isSuccessComic || isSuccessEvent){
             const datos = getDataByOption();
             const image = datos?.thumbnail;

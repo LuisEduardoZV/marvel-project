@@ -1,23 +1,27 @@
-const Pagination = ({itemsPerPage, totalItems, onClickPaginate}) => {
-
-    const pageNumbers = [];
-
-    for(let i = 1; i <= Math.ceil(totalItems/itemsPerPage); i++){
-        pageNumbers.push(i);
-    }
+const Pagination = ({ currentPage, onClickPaginate, lastPage}) => {
 
     return (
-        <nav>
-            <ul className="pagination">
-                {
-                    pageNumbers.map((value, index) =>(
-                        <li key={index} className="page-item">
-                            <a href="!#" className="page-link" onClick={() => onClickPaginate(value)}>{value}</a>
-                        </li>
-                    ))
-                }
-            </ul>
-        </nav>
+        <div className="flex flex-row justify-center mt-9 font-rajdhani items-center text-lg font-semibold">
+            <button
+                onClick={() => onClickPaginate("back")}
+                disabled={currentPage === 1}
+                className={`py-1 px-3 bg-marvel-vino-80
+                    hover:bg-marvel-vino-100 rounded-md mx-3 
+                    text-white font-normal ${currentPage === 1 && 'cursor-not-allowed'}`}
+            >
+                <span>{`<-`}</span>
+            </button>
+            <button
+                onClick={() => onClickPaginate("next")}
+                disabled={currentPage === Math.ceil(lastPage)}
+                className={`py-1 px-3 bg-marvel-vino-80 
+                hover:bg-marvel-vino-100 rounded-md mx-3 
+                text-white font-normal ${currentPage === Math.ceil(lastPage) && 'cursor-not-allowed'}`}
+            >
+                <span>{`->`}</span>
+            </button>
+            <span>{`${currentPage} / ${Math.ceil(lastPage)}`}</span>
+        </div>
     );
 }
 
