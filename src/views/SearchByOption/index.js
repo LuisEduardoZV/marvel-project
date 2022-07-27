@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {useParams} from 'react-router-dom';
+import {useParams, useNavigate} from 'react-router-dom';
 import { useFetchGetAllCharactersQuery, useFetchGetAllComicsQuery, useFetchGetAllEventsQuery } from "../../api/marvelApi";
 
 import { createHash } from '../../keys';
@@ -12,6 +12,7 @@ import Pagination from "./components/Pagination";
 const SearchByOption = () => {
 
     const {option} = useParams();
+    const navigate = useNavigate();
 
     const [currentPage, setCurrentPage] = useState(1);
     const [limit, ] = useState(20);
@@ -43,6 +44,11 @@ const SearchByOption = () => {
         }
     }
 
+    const onClickItem = (name, id) => {
+        //console.log(id);
+        navigate(`/search/${option}/${name}/${id}`);
+    }
+
     const renderContent = () => {
         if(isLoadingCharacter || isLoadingComic || isLoadingEvent || isFetchingCharacter || isFetchingComic || isFetchingEvent){
             return <Loading text="Obteniendo información..."/>;
@@ -61,7 +67,7 @@ const SearchByOption = () => {
                         onClickPaginate={onClickPaginate} 
                         lastPage={lastPage} 
                     />
-                    <SearchList dataLeft={dataLeft} dataRight={dataRight}  option={option} />
+                    <SearchList dataLeft={dataLeft} dataRight={dataRight}  option={option} onClickItem={onClickItem}/>
                 </>
             );
         }

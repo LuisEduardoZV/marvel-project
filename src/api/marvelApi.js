@@ -5,25 +5,9 @@ export const marvelSearchApi = createApi({
     reducerPath: "marvelSearchApi",
     baseQuery: fetchBaseQuery({baseUrl: 'http://gateway.marvel.com/v1/public'}),
     endpoints: (builder) => ({
-        fetchSearchByCharacter: builder.query({
-            query: ({name, hash, ts}) => ({
-                url: `/characters?name=${name}&ts=${ts}&apikey=${PUBLIC_KEY}&hash=${hash}`,
-                method: 'GET',
-                headers: {
-                }
-            })
-        }),
-        fetchSearchByComic: builder.query({
-            query: ({name, hash, ts}) => ({
-                url: `/comics?title=${name}&ts=${ts}&apikey=${PUBLIC_KEY}&hash=${hash}`,
-                method: 'GET',
-                headers: {
-                }
-            })
-        }),
-        fetchSearchByEvent: builder.query({
-            query: ({name, hash, ts}) => ({
-                url: `/events?name=${name}&ts=${ts}&apikey=${PUBLIC_KEY}&hash=${hash}`,
+        fetchSearchByOption: builder.query({
+            query: ({name, hash, ts, option, searchType}) => ({
+                url: `/${option}?${searchType}=${name}&ts=${ts}&apikey=${PUBLIC_KEY}&hash=${hash}`,
                 method: 'GET',
                 headers: {
                 }
@@ -53,13 +37,29 @@ export const marvelSearchApi = createApi({
                 }
             })
         }),
+        fetchGetDataWithOptionById: builder.query({
+            query: ({id, hash, ts, option}) => ({
+                url: `/${option}/${id}?ts=${ts}&apikey=${PUBLIC_KEY}&hash=${hash}`,
+                method: 'GET',
+                headers: {
+                }
+            })
+        }),
+        fetchGetDetailByCategoryOptionAndId: builder.query({
+            query: ({hash, ts, offset, limit, option, id, category}) => ({
+                url: `/${category}/${id}/${option}?limit=${limit}&offset=${offset}&apikey=${PUBLIC_KEY}&hash=${hash}&ts=${ts}`,
+                method: 'GET',
+                headers: {
+                }
+            })
+        }),
     }),
 });
 
 
-export const {useFetchSearchByCharacterQuery, 
-            useFetchSearchByComicQuery, 
-            useFetchSearchByEventQuery, 
+export const {useFetchSearchByOptionQuery, 
             useFetchGetAllCharactersQuery,
             useFetchGetAllComicsQuery,
-            useFetchGetAllEventsQuery} = marvelSearchApi;
+            useFetchGetAllEventsQuery,
+            useFetchGetDetailByCategoryOptionAndIdQuery,
+            useFetchGetDataWithOptionByIdQuery} = marvelSearchApi;

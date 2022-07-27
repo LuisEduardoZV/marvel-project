@@ -20,7 +20,7 @@ const Home = () => {
     }
 
     const handleSearch = () => {
-        if(!(search === "") && !(option === "")) navigate(`/search/${option}/${search}`);
+        if(!(search === "") && !(option === "")) navigate(`/search/${option}/${search}/${`info`}`);
         else if(!(option === "")) navigate(`/search/${option}`);
         else alert("Please select at least one search option.");
     }

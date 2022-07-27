@@ -29,7 +29,7 @@ const SearchBox = ({option, search, onOptionSelected, onSearch, onChangeInputSea
                 </div>
                 <div>
                     <button className='ml-14 font-rajdhani bg-marvel-vino-80 text-white p-1 rounded-xl w-20
-                    hover:bg-marvel-vino-100' onClick={onSearch}>Buscar</button>
+                    hover:bg-marvel-vino-100' onClick={onSearch}>Search</button>
                 </div>
             </div>
         </div>

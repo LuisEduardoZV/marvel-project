@@ -1,7 +1,5 @@
 import {useParams} from 'react-router-dom';
-import {useFetchSearchByCharacterQuery, 
-        useFetchSearchByComicQuery, 
-        useFetchSearchByEventQuery} from '../../api/marvelApi';
+import {useFetchSearchByOptionQuery, useFetchGetDataWithOptionByIdQuery} from '../../api/marvelApi';
 import { createHash } from '../../keys';
 
 import Loading from '../../components/Loading';
@@ -13,31 +11,33 @@ import { useState } from 'react';
 
 const Search = () => {
 
-    const {name, option} = useParams();
+    const {name, option, id} = useParams();
     const [ts, ] = useState(5 + Math.random() * (1000 - 5));
     const [hash, ] = useState(createHash(ts));
 
-    const {data: dataCharacter, error: errorCharacter, isLoading: isLoadingCharacter, idFetching: isFetchingCharacter, isSuccess: isSuccessCharacter} = 
-        useFetchSearchByCharacterQuery({name: name, hash: hash, ts: ts}, {skip: option === 'characters' ? false : true});
-    const {data: dataComic, error: errorComic, isLoading: isLoadingComic, idFetching: isFetchingComic, isSuccess: isSuccessComic} = 
-        useFetchSearchByComicQuery({name: name, hash: hash, ts: ts}, {skip: option === 'comics' ? false : true});
-    const {data: dataEvent, error: errorEvent, isLoading: isLoadingEvent, idFetching: isFetchingEvent, isSuccess: isSuccessEvent} = 
-        useFetchSearchByEventQuery({name: name, hash: hash, ts: ts}, {skip: option === 'events' ? false : true});
+    //Fetch when user search by option and name
+    const {data, error, isLoading, isFetching, isSuccess} = useFetchSearchByOptionQuery(
+                                                {name: name, hash: hash, ts: ts, option: option, searchType: option === "comics" ? "title" : "name"}, 
+                                                {skip: id === "info" ? false : true});
+    const {data:dataId, error: errorId, isLoading: isLoadingId, isFetching: isFetchingId, isSuccess: isSuccessId} = useFetchGetDataWithOptionByIdQuery(
+        {id: id, hash: hash, ts: ts, option: option}, 
+        {skip: id !== "info" ? false : true});
 
-    const getDataByOption = () =>{
-        if(isSuccessCharacter) return dataCharacter?.data?.results[0];
-        else if(isSuccessComic) return dataComic?.data?.results[0];
-        else if(isSuccessEvent) return dataEvent?.data?.results[0];
+    //Fetch when user first search by option and then click in a specific result
+
+    const selectData = () => {
+        if(id === "info") return data?.data?.results[0];
+        else if(id !== "info") return dataId?.data?.results[0];
     }
 
     const renderContent = () => {
-        if(isLoadingCharacter || isLoadingComic || isLoadingEvent || isFetchingCharacter || isFetchingComic || isFetchingEvent){
+        if(isLoading || isFetching || isLoadingId || isFetchingId){
             return <Loading text="Obteniendo información..."/>;
-        }else if((errorCharacter || errorComic || errorEvent) || (dataCharacter?.data?.total === 0 || dataComic?.data?.total === 0 || dataEvent?.data?.total === 0)){
-            if((dataCharacter?.data?.total === 0 || dataComic?.data?.total === 0 || dataEvent?.data?.total === 0)) 
+        }else if((error || errorId) || (data?.data?.total === 0 || dataId?.data?.total === 0)){
+            if(data?.data?.total === 0) 
                 return <Error text={`No information was found for the following ${option.slice(0,option.length-1)}: ${name}`} />;
-        }else if(isSuccessCharacter || isSuccessComic || isSuccessEvent){
-            const datos = getDataByOption();
+        }else if(isSuccess || isSuccessId){
+            const datos = selectData();
             const image = datos?.thumbnail;
             return (
                 <div className='flex flex-row w-full h-full py-20 px-24 font-rajdhani'>

@@ -11,7 +11,10 @@ const ListAdditionalInformation = ({dataList, title, option}) => {
                 )) : <p className='mr-16'>No data</p>
             }
             {
-                (option === 'characters' || option === 'events') && <p className='font-bold border-b-2 border-marvel-vino-80'>More...</p>
+                dataList?.length >= 3 ? <div className="flex justify-center items-center">
+                    <button className="py-1 px-3 bg-marvel-red-100 rounded-md text-white
+                            hover:bg-marvel-vino-80" name={option}>More...</button>
+                </div> : ""
             }
             </div>
         </>
