@@ -1,6 +1,7 @@
 import {useParams, useNavigate} from 'react-router-dom';
 import {useFetchSearchByOptionQuery, useFetchGetDataWithOptionByIdQuery} from '../../api/marvelApi';
 import { createHash } from '../../keys';
+import { stilyzeString } from '../../app/recurrentFunctions';
 
 import Loading from '../../components/Loading';
 import Error from '../../components/Error';
@@ -8,6 +9,7 @@ import Nav from '../../components/Nav';
 import LeftContainer from './components/LeftContainer';
 import RightContainer from './components/RightContainer';
 import { useState } from 'react';
+import TitleContainer from './components/TitleContainer';
 
 const Search = () => {
 
@@ -35,6 +37,10 @@ const Search = () => {
         navigate(`/search/${option}/${id}/${category}`);
     }
 
+    const onClickItemList = (category, idItem, name) => {
+        navigate(`/search/${category}/${stilyzeString(name)}/${idItem}/detail`);
+    }
+
     const renderContent = () => {
         if(isLoading || isFetching || isLoadingId || isFetchingId){
             return <Loading text="Obteniendo información..."/>;
@@ -44,12 +50,15 @@ const Search = () => {
         }else if(isSuccess || isSuccessId){
             const datos = selectData();
             const image = datos?.thumbnail;
-            console.log(datos, name, option, id);
             return (
-                <div className='flex flex-row w-full h-full py-20 px-24 font-rajdhani'>
-                    <LeftContainer option={option} image={image} datos={datos} />
-                    <RightContainer option={option} datos={datos} id={id} 
-                    onClickDetailCategory={onClickDetailCategory}/>
+                <div className='flex flex-col w-full h-full pt-14 px-24 font-rajdhani'>
+                    <TitleContainer datos={datos} option={option} />
+                    <div className='flex felx-row w-full h-full'>
+                        <LeftContainer image={image} />
+                        <RightContainer option={option} datos={datos} id={id} 
+                        onClickDetailCategory={onClickDetailCategory}
+                        onClickItemList={onClickItemList}/>
+                    </div>
                 </div>
             );
         }

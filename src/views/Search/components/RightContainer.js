@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ListAdditionalInformation from "./ListAdditionalInformation";
 
-const RightContainer = ({datos, option, onClickDetailCategory}) => {
+const RightContainer = ({datos, option, onClickDetailCategory, onClickItemList}) => {
 
     const [data, setData] = useState([]);
 
@@ -84,7 +84,7 @@ const RightContainer = ({datos, option, onClickDetailCategory}) => {
 
     return(
         <div className='flex w-3/5 flex-col justify-start items-start text-left'>
-            <p className=' text-2xl mt-24 mb-6'>
+            <p className=' text-2xl mb-6'>
                 {(datos?.description === "" || datos?.description === null || datos?.description === undefined) ? "No description available." 
                 : datos?.description}
             </p>
@@ -93,7 +93,8 @@ const RightContainer = ({datos, option, onClickDetailCategory}) => {
                 data?.map((value, index) => (
                     <ListAdditionalInformation option={option} key={index} 
                     dataList={value.data} title={value.title}
-                    onClickDetailCategory={onClickDetailCategory}/>
+                    onClickDetailCategory={onClickDetailCategory}
+                    onClickItemList={onClickItemList}/>
                 ))
             }
         </div>

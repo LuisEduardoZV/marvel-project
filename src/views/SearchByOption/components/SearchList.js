@@ -1,6 +1,6 @@
 import imageNotFound from '../../../assets/image_not_available.jpg';
 
-const SearchList = ({dataLeft, dataRight, option, onClickItem}) => {
+const SearchList = ({dataLeft, dataRight, option, onClickItem, datos}) => {
 
     const getItemTitle = (item) => {
         if(option === 'characters') return item?.name;
@@ -14,7 +14,8 @@ const SearchList = ({dataLeft, dataRight, option, onClickItem}) => {
     }
 
     const getItemDescription = (item) => {
-        if(item?.description === '' || item?.description === null || item?.description === undefined) return "No description available.";
+        if(item?.description === '' || item?.description === null || item?.description === undefined) 
+            return "No description available.";
         else return `${item?.description}`;
     }
 

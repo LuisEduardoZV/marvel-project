@@ -26,7 +26,7 @@ const Home = () => {
     }
 
     return(
-        <div className="flex bg-fondo-inicio w-full h-full object-cover bg-cover bg-top flex-col items-center">
+        <div className="flex bg-fondo-inicio w-auto h-full object-cover bg-cover bg-top flex-col items-center">
             <InformationHome />
             <SearchBox option={option} search={search} 
             onOptionSelected={handleOptionSelected} 

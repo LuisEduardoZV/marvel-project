@@ -6,6 +6,7 @@ import { useFetchGetAllCharactersQuery,
     useFetchGetDetailByCategoryOptionAndIdQuery } from "../../api/marvelApi";
 
 import { createHash } from '../../keys';
+import {stilyzeString} from '../../app/recurrentFunctions';
 import Nav from "../../components/Nav";
 import Loading from '../../components/Loading';
 import Error from '../../components/Error';
@@ -57,8 +58,8 @@ const SearchByOption = () => {
 
     const onClickItem = (name, id) => {
         if(category === undefined) 
-            navigate(`/search/${option}/${name.trim().replace(" ","").replace("#","").replace("/","").replace(" ","")}/${id}/detail`);
-        else navigate(`/search/${category}/${name.trim().replace(" ","").replace("#","").replace("/","").replace(" ","")}/${id}/detail`);
+            navigate(`/search/${option}/${stilyzeString(name)}/${id}/detail`);
+        else navigate(`/search/${category}/${stilyzeString(name)}/${id}/detail`);
     }
 
     const renderContent = () => {
@@ -76,17 +77,19 @@ const SearchByOption = () => {
             return(
                 <>
                     {
-                        isSuccessId && <div>
+                         /*isSuccessId && <div>
                             <p>{`${category}`}</p>
-                        </div>
+                        </div>*/
                     }
                     {
-                        lastPage !== 1 ? <Pagination currentPage={currentPage} 
+                        lastPage !== 1 && <Pagination currentPage={currentPage} 
                         onClickPaginate={onClickPaginate} 
                         lastPage={lastPage} 
-                    /> : "No Pagination"
+                    />
                     }
-                    <SearchList dataLeft={dataLeft} dataRight={dataRight}  option={category === undefined ? option : category} onClickItem={onClickItem}/>
+                    <SearchList datos={currentData} dataLeft={dataLeft} dataRight={dataRight} 
+                        option={category === undefined ? option : category} 
+                        onClickItem={onClickItem}/>
                 </>
             );
         }
