@@ -47,7 +47,7 @@ export const marvelSearchApi = createApi({
         }),
         fetchGetDetailByCategoryOptionAndId: builder.query({
             query: ({hash, ts, offset, limit, option, id, category}) => ({
-                url: `/${category}/${id}/${option}?limit=${limit}&offset=${offset}&apikey=${PUBLIC_KEY}&hash=${hash}&ts=${ts}`,
+                url: `/${option}/${id}/${category}?limit=${limit}&offset=${offset}&apikey=${PUBLIC_KEY}&hash=${hash}&ts=${ts}`,
                 method: 'GET',
                 headers: {
                 }

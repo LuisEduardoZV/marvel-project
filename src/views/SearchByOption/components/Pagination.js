@@ -13,14 +13,14 @@ const Pagination = ({ currentPage, onClickPaginate, lastPage}) => {
             </button>
             <button
                 onClick={() => onClickPaginate("next")}
-                disabled={currentPage === Math.ceil(lastPage)}
+                disabled={currentPage === lastPage}
                 className={`py-1 px-3 bg-marvel-vino-80 
                 hover:bg-marvel-vino-100 rounded-md mx-3 
-                text-white font-normal ${currentPage === Math.ceil(lastPage) && 'cursor-not-allowed'}`}
+                text-white font-normal ${currentPage === lastPage && 'cursor-not-allowed'}`}
             >
                 <span>{`->`}</span>
             </button>
-            <span>{`${currentPage} / ${Math.ceil(lastPage)}`}</span>
+            <span>{`${currentPage} / ${lastPage}`}</span>
         </div>
     );
 }

@@ -1,6 +1,6 @@
 import ListItem from "./ListItem";
 
-const ListAdditionalInformation = ({dataList, title, option}) => {
+const ListAdditionalInformation = ({dataList, title, option, onClickDetailCategory}) => {
     return(
         <>
             <h3 className='font-bold text-xl'>{title}</h3>
@@ -11,9 +11,11 @@ const ListAdditionalInformation = ({dataList, title, option}) => {
                 )) : <p className='mr-16'>No data</p>
             }
             {
-                dataList?.length >= 3 ? <div className="flex justify-center items-center">
+                dataList?.length >= 3 ? 
+                <div className="flex justify-center items-center">
                     <button className="py-1 px-3 bg-marvel-red-100 rounded-md text-white
-                            hover:bg-marvel-vino-80" name={option}>More...</button>
+                            hover:bg-marvel-vino-80" name={option}
+                            onClick={() => onClickDetailCategory(title.toLowerCase())}>More...</button>
                 </div> : ""
             }
             </div>

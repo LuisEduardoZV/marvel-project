@@ -1,4 +1,4 @@
-import {useParams} from 'react-router-dom';
+import {useParams, useNavigate} from 'react-router-dom';
 import {useFetchSearchByOptionQuery, useFetchGetDataWithOptionByIdQuery} from '../../api/marvelApi';
 import { createHash } from '../../keys';
 
@@ -12,22 +12,27 @@ import { useState } from 'react';
 const Search = () => {
 
     const {name, option, id} = useParams();
-    const [ts, ] = useState(5 + Math.random() * (1000 - 5));
+    const [ts, ] = useState(Math.ceil(5 + Math.random() * (1000 - 5)));
     const [hash, ] = useState(createHash(ts));
+
+    const navigate = useNavigate();
 
     //Fetch when user search by option and name
     const {data, error, isLoading, isFetching, isSuccess} = useFetchSearchByOptionQuery(
                                                 {name: name, hash: hash, ts: ts, option: option, searchType: option === "comics" ? "title" : "name"}, 
-                                                {skip: id === "info" ? false : true});
+                                                {skip: id === undefined ? false : true});
+    //Fetch when user first search by option and then click in a specific result
     const {data:dataId, error: errorId, isLoading: isLoadingId, isFetching: isFetchingId, isSuccess: isSuccessId} = useFetchGetDataWithOptionByIdQuery(
         {id: id, hash: hash, ts: ts, option: option}, 
-        {skip: id !== "info" ? false : true});
-
-    //Fetch when user first search by option and then click in a specific result
+        {skip: id !== undefined ? false : true});
 
     const selectData = () => {
-        if(id === "info") return data?.data?.results[0];
-        else if(id !== "info") return dataId?.data?.results[0];
+        if(id === undefined) return data?.data?.results[0];
+        else if(id !== undefined) return dataId?.data?.results[0];
+    }
+
+    const onClickDetailCategory = (category) => {
+        navigate(`/search/${option}/${id}/${category}`);
     }
 
     const renderContent = () => {
@@ -39,10 +44,12 @@ const Search = () => {
         }else if(isSuccess || isSuccessId){
             const datos = selectData();
             const image = datos?.thumbnail;
+            console.log(datos, name, option, id);
             return (
                 <div className='flex flex-row w-full h-full py-20 px-24 font-rajdhani'>
                     <LeftContainer option={option} image={image} datos={datos} />
-                    <RightContainer option={option} datos={datos} />
+                    <RightContainer option={option} datos={datos} id={id} 
+                    onClickDetailCategory={onClickDetailCategory}/>
                 </div>
             );
         }
