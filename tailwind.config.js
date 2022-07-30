@@ -7,13 +7,13 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        'fondo-inicio': "url('/src/assets/fondo-inicio.jpg')",
+        'fondo-home': "url('/src/assets/marvel.png')",
       },
     },
     fontFamily: {
       rajdhani: ['Rajdhani', 'sans-serif'],
     },
-    colors:{
+    colors: {
       "marvel-vino": {
         100: "#340C0C",
         80: "#421010",
@@ -26,6 +26,8 @@ module.exports = {
       "white-gray": "#DDDDDD",
       "bg-input-gray": "#C1C1C1",
       "gray-nav": "#424242",
+      "blue-comic": "#0C97B4",
+      "yellow-comic": "#EBD247",
       ...colors,
     },
   },
