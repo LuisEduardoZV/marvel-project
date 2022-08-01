@@ -14,6 +14,7 @@ import Loading from '../../components/Loading';
 import Error from '../../components/Error';
 import SearchList from "./components/SearchList";
 import Pagination from "./components/Pagination";
+import Footer from "../../components/Footer";
 
 const SearchByOption = () => {
 
@@ -41,10 +42,10 @@ const SearchByOption = () => {
             { skip: (category !== undefined && id !== undefined) ? false : true });
 
     const getData = () => {
-        if (isSuccessCharacter) return dataCharacter.data;
-        else if (isSuccessComic) return dataComic.data;
-        else if (isSuccessEvent) return dataEvent.data;
-        else if (category !== undefined && id !== undefined) return dataId.data;
+        if (isSuccessCharacter) return dataCharacter;
+        else if (isSuccessComic) return dataComic;
+        else if (isSuccessEvent) return dataEvent;
+        else if (category !== undefined && id !== undefined) return dataId;
     }
 
     //Change page
@@ -66,11 +67,12 @@ const SearchByOption = () => {
 
     const renderContent = () => {
         if (isLoadingCharacter || isLoadingComic || isLoadingEvent || isLoadingId || isFetchingCharacter || isFetchingComic || isFetchingEvent || isFetchingId) {
-            return <Loading text="Obteniendo información..." />;
+            return <Loading text="Getting information..." />;
         } else if ((errorCharacter || errorComic || errorEvent || errorId) || (dataCharacter?.data?.total === 0 || dataComic?.data?.total === 0 || dataEvent?.data?.total === 0 || dataId?.data?.total === 0)) {
-            return <Error text="No info" />;
+            return <Error text="No data" />;
         } else if (isSuccessCharacter || isSuccessComic || isSuccessEvent || isSuccessId) {
-            const dataGeneral = getData();
+            const response = getData();
+            const dataGeneral = response.data;
             const currentData = dataGeneral?.results;
             const lastPage = Math.ceil(dataGeneral?.total / limit);
             return (
@@ -89,6 +91,7 @@ const SearchByOption = () => {
                     <SearchList datos={currentData}
                         option={category === undefined ? option : category}
                         onClickItem={onClickItem} />
+                    <Footer text={response?.attributionText} />
                 </>
             );
         }

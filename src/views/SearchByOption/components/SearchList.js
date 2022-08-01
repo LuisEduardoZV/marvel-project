@@ -22,7 +22,7 @@ const SearchList = ({ option, onClickItem, datos }) => {
     }
 
     return (
-        <div className="flex 2xl:px-16 xl:px-16 lg:px-4 2xl:py-2 xl:py-2 lg:py-2 md:py-1 flex-col w-full my-10">
+        <div className="flex 2xl:px-16 xl:px-16 lg:px-4 2xl:py-2 xl:py-2 lg:py-2 md:py-1 flex-col w-full mt-5 mb-24">
             {renderContent()}
         </div>
     );
