@@ -35,7 +35,13 @@ const Search = () => {
     }
 
     const onClickDetailCategory = (category) => {
-        navigate(`/search/${option}/${id}/${category}`);
+        if(id === undefined){
+            const datos = selectData();
+            const idSearchResult = datos?.data?.results[0]?.id;
+            navigate(`/search/${option}/${idSearchResult}/${category}`);
+        }else{
+            navigate(`/search/${option}/${id}/${category}`);
+        }
     }
 
     const onClickItemList = (category, idItem, name) => {
