@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/marvel-project/static/css/main.67040d30.css",
+    "main.js": "/marvel-project/static/js/main.42ec304d.js",
+    "static/js/787.100a7847.chunk.js": "/marvel-project/static/js/787.100a7847.chunk.js",
+    "static/media/marvel.png": "/marvel-project/static/media/marvel.2eab4b669cb19e274338.png",
+    "static/media/marvel-comic.jpg": "/marvel-project/static/media/marvel-comic.fcdf07f7264c034beeba.jpg",
+    "static/media/image_not_available.jpg": "/marvel-project/static/media/image_not_available.805ca0920c37c690177c.jpg",
+    "static/media/marvel-comic-2.jpg": "/marvel-project/static/media/marvel-comic-2.43e29c7f6869d65ddce2.jpg",
+    "static/media/the-avengers.png": "/marvel-project/static/media/the-avengers.6e81fe57b7fc9fbb234f.png",
+    "static/media/marvel-comics-logo.png": "/marvel-project/static/media/marvel-comics-logo.edc5e8857742ce9e132e.png",
+    "static/media/marvel-logo.png": "/marvel-project/static/media/marvel-logo.ad83448cb5526a9fd70d.png",
+    "static/media/404.png": "/marvel-project/static/media/404.fab8ad695e2026cc86b8.png",
+    "index.html": "/marvel-project/index.html",
+    "main.67040d30.css.map": "/marvel-project/static/css/main.67040d30.css.map",
+    "main.42ec304d.js.map": "/marvel-project/static/js/main.42ec304d.js.map",
+    "787.100a7847.chunk.js.map": "/marvel-project/static/js/787.100a7847.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.67040d30.css",
+    "static/js/main.42ec304d.js"
+  ]
+}
